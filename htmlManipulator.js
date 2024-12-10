@@ -39,7 +39,7 @@ internal.createHtml = (res, data, next) => {
 internal.BlogDetailsPage = async (req, res, next) => {
     try {
         const { slug } = req.params;
-        const baseUrl = process.env.VITE_APP_BASE_URI || 'http://localhost:8888';
+        const baseUrl = process.env.VITE_APP_BASE_URI || 'https://api.myunicampus.com/';
         const result = await axios.get(`${baseUrl}/blog/${slug}`);
 
         console.log('API Response:', result.data);  

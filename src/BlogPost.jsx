@@ -8,7 +8,7 @@ function BlogPage() {
   const [blog, setBlog] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:8888/blog/${slug}`).then((res) => setBlog(res.data.data));
+    axios.get(`https://api.myunicampus.com/blog/${slug}`).then((res) => setBlog(res.data.data));
   }, [slug]);
 
   if (!blog) return <div>Loading...</div>;
@@ -20,12 +20,12 @@ function BlogPage() {
         <meta name="description" content={blog.shortDescription} />
         <meta property="og:title" content={blog.blogTitle} />
         <meta property="og:description" content={blog.shortDescription} />
-        <meta property="og:image" content={`http://localhost:8888/${blog.blogImage}`} />
-        <meta property="og:url" content={`http://localhost:3000/blog/${slug}`} />
+        <meta property="og:image" content={`https://api.myunicampus.com/${blog.blogImage}`} />
+        <meta property="og:url" content={`https://api.myunicampus.com/blog/${slug}`} />
       </Helmet>
 
       <h1>{blog.blogTitle}</h1>
-      <img src={`http://localhost:8888/${blog.blogImage}`} alt={blog.blogTitle} />
+      <img src={`https://api.myunicampus.com/${blog.blogImage}`} alt={blog.blogTitle} />
       <p>{blog.blogContent}</p>
     </div>
   );

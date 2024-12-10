@@ -22,7 +22,7 @@ app.get('/blog/:slug', async (req, res) => {
   const slug = req.params.slug;
 
   try {
-    const response = await axios.get(`http://localhost:8888/blog/${slug}`);
+    const response = await axios.get(`https://api.myunicampus.com/blog/${slug}`);
     const blog = response.data.data;
 
     console.log('Blog data:', blog);
@@ -45,8 +45,8 @@ app.get('/blog/:slug', async (req, res) => {
         ${helmet.meta.toString()}
         <meta property="og:title" content="${blog.blogTitle}" />
         <meta property="og:description" content="${blog.shortDescription}" />
-        <meta property="og:image" content="http://localhost:8888/${blog.blogImage}" />
-        <meta property="og:url" content="http://localhost:3000/blog/${slug}" />
+        <meta property="og:image" content="https://api.myunicampus.com/${blog.blogImage}" />
+        <meta property="og:url" content="https://api.myunicampus.com/blog/${slug}" />
       `
     );
 
