@@ -18,7 +18,7 @@
     "react-scripts": "5.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node ssr/server.js",
     "ssr": "node server/index.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
