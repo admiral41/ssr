@@ -15,15 +15,17 @@
     "react-helmet": "^6.1.0",
     "react-hot-toast": "^2.4.1",
     "react-router-dom": "^7.0.2",
-    "react-scripts": "5.0.1"
+    "react-scripts": "5.0.1",
+    "react-snap": "^1.23.0"
   },
   "scripts": {
     "start": "node ssr/server.js",
     "ssr": "node ssr/server.js",
     "build": "react-scripts build",
+    "vercel-build": "npm run build && npm run build-server",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build-server": "babel server --out-dir dist/server"
+    "build-server": "babel ssr --out-dir dist/server"
   },
   "eslintConfig": {
     "extends": [
