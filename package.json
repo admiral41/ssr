@@ -22,10 +22,9 @@
     "start": "node ssr/server.js",
     "ssr": "node ssr/server.js",
     "build": "react-scripts build",
-    "vercel-build": "npm run build && npm run build-server",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build-server": "babel ssr --out-dir dist/server"
+    "build-server": "babel server --out-dir dist/server"
   },
   "eslintConfig": {
     "extends": [
