@@ -53,12 +53,23 @@ app.get('*', async (req, res) => {
         ${
           blog
             ? `
-          <meta property="og:title" content="${blog.blogTitle}" />
-          <meta property="og:description" content="${blog.shortDescription}" />
-          <meta property="og:image" content="https://kao-nepal-backend.onrender.com/${blog.blogImage}" />
-          <meta property="og:url" content="https://your-domain.com/blog/${blog.blogSlug}" />
+            <meta property="og:title" content="${blog.blogTitle}" />
+            <meta property="og:description" content="${blog.shortDescription}" />
+            <meta property="og:image" content="https://kao-nepal-backend.onrender.com/${blog.blogImage}" />
+            <meta property="og:url" content="https://ssr-wheat.vercel.app/blog/${blog.blogSlug}" />
+
+            <meta name="twitter:card" content="summary_large_image">
+            <meta name="twitter:title" content="${blog.blogTitle}">
+            <meta name="twitter:description" content="${blog.shortDescription}">
+            <meta name="twitter:image" content="https://kao-nepal-backend.onrender.com/${blog.blogImage}">
+            <meta name="twitter:url" content="https://ssr-wheat.vercel.app/blog/${blog.blogSlug}">
         `
-            : ''
+            : `
+            <meta property="og:title" content="My Unicampus" />
+            <meta property="og:description" content="Welcom to my unicampus" />
+            <meta property="og:image" content="https://myunicampus.com/assets/images/unicampus_logo.svg" />
+            <meta property="og:url" content="https://ssr-wheat.vercel.app" />
+            `
         }
       `
     );
