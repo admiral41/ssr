@@ -22,7 +22,6 @@ function BlogPage() {
         <meta property="og:description" content={blog.shortDescription} />
         <meta property="og:image" content={`https://kao-nepal-backend.onrender.com/${blog.blogImage}`} />
         <meta property="og:url" content={`https://ssr-wheat.vercel.app/blog/${slug}`} />
-        
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={blog.blogTitle} />
         <meta name="twitter:description" content={blog.shortDescription} />
