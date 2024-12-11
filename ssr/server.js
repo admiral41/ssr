@@ -58,6 +58,7 @@ app.get('*', async (req, res) => {
 
     // Inject SSR rendered markup into the root
     html = html.replace('<div id="root"></div>', `<div id="root">${appMarkup}</div>`);
+    console.log(html);
 
     res.send(html);
   } catch (error) {
