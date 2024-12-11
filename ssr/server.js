@@ -23,35 +23,17 @@ app.get('*', async (req, res) => {
     const slugMatch = req.url.match(/^\/blog\/([^/]+)$/);
     let blog = null;
 
-    // If the route matches a blog slug, fetch blog data
+    // Fetch blog data if the route matches a blog slug
     if (slugMatch) {
       const slug = slugMatch[1];
       const response = await axios.get(`https://kao-nepal-backend.onrender.com/blog/${slug}`);
       blog = response.data.data;
     }
 
+    // Read index.html
     let html = fs.readFileSync(path.join(buildPath, 'index.html'), 'utf8');
 
-    // Default values if blog is not found
-    let title = 'Myunicampus';
-    let description = 'this is my unicampus static';
-    let image = 'https://myunicampus.com/assets/images/unicampus_logo.svg';
-    let url = 'https://ssr-wheat.vercel.app';
-
-    // If the route is a blog, replace with dynamic values
-    if (blog) {
-      title = blog.blogTitle;
-      description = blog.shortDescription;
-      image = `https://kao-nepal-backend.onrender.com/${blog.blogImage}`;
-      url = `https://ssr-wheat.vercel.app/blog/${blog.blogSlug}`;
-    }
-
-    // Replace placeholders with dynamic content
-    html = html.replace('__OG_TITLE__', title);
-    html = html.replace('__OG_DESCRIPTION__', description);
-    html = html.replace('__OG_IMAGE__', image);
-    html = html.replace('__OG_URL__', url);
-
+    // Render App to a string
     const context = {};
     const appMarkup = ReactDOMServer.renderToString(
       React.createElement(
@@ -61,6 +43,20 @@ app.get('*', async (req, res) => {
       )
     );
 
+    // Inject dynamic meta tags into placeholders
+    html = html
+      .replace(/__TITLE__/g, blog ? blog.blogTitle : 'My Unicampus')
+      .replace(/__DESCRIPTION__/g, blog ? blog.shortDescription : 'This is My Unicampus')
+      .replace(/__OG_TITLE__/g, blog ? blog.blogTitle : 'My Unicampus')
+      .replace(/__OG_DESCRIPTION__/g, blog ? blog.shortDescription : 'This is My Unicampus')
+      .replace(/__OG_IMAGE__/g, blog ? `https://kao-nepal-backend.onrender.com/${blog.blogImage}` : 'https://myunicampus.com/assets/images/unicampus_logo.svg')
+      .replace(/__OG_URL__/g, blog ? `https://ssr-wheat.vercel.app/blog/${blog.blogSlug}` : 'https://ssr-wheat.vercel.app')
+      .replace(/__TWITTER_TITLE__/g, blog ? blog.blogTitle : 'My Unicampus')
+      .replace(/__TWITTER_DESCRIPTION__/g, blog ? blog.shortDescription : 'This is My Unicampus')
+      .replace(/__TWITTER_IMAGE__/g, blog ? `https://kao-nepal-backend.onrender.com/${blog.blogImage}` : 'https://myunicampus.com/assets/images/unicampus_logo.svg')
+      .replace(/__TWITTER_URL__/g, blog ? `https://ssr-wheat.vercel.app/blog/${blog.blogSlug}` : 'https://ssr-wheat.vercel.app');
+
+    // Inject SSR rendered markup into the root
     html = html.replace('<div id="root"></div>', `<div id="root">${appMarkup}</div>`);
 
     res.send(html);
@@ -69,6 +65,7 @@ app.get('*', async (req, res) => {
     res.status(500).send('Error rendering page');
   }
 });
+
 
 
 app.listen(PORT, () => {
