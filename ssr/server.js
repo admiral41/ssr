@@ -18,14 +18,19 @@ const buildPath = path.join(__dirname, '../build');
 
 app.use(express.static(buildPath));
 
-app.get('https://kao-nepal-backend.onrender.com/blog/:slug', async (req, res) => {
-  const slug = req.params.slug;
-
+// Dynamic rendering for all routes, including blog pages
+app.get('*', async (req, res) => {
   try {
-    const response = await axios.get(`https://kao-nepal-backend.onrender.com/blog/${slug}`);
-    const blog = response.data.data;
+    const slugMatch = req.url.match(/^\/blog\/([^/]+)$/);
+    let blog = null;
 
-    console.log('Blog data:', blog);
+    // If the route matches a blog slug, fetch blog data
+    if (slugMatch) {
+      const slug = slugMatch[1];
+      const response = await axios.get(`https://kao-nepal-backend.onrender.com/blog/${slug}`);
+      blog = response.data.data;
+    }
+
     let html = fs.readFileSync(path.join(buildPath, 'index.html'), 'utf8');
 
     const context = {};
@@ -33,20 +38,28 @@ app.get('https://kao-nepal-backend.onrender.com/blog/:slug', async (req, res) =>
       React.createElement(
         StaticRouter,
         { location: req.url, context },
-        React.createElement(App, { blog })
+        React.createElement(App)
       )
     );
 
     const helmet = Helmet.renderStatic();
+
+    // Inject Open Graph meta tags dynamically if blog data exists
     html = html.replace(
       '<head>',
       `<head>
         ${helmet.title.toString()}
         ${helmet.meta.toString()}
-        <meta property="og:title" content="${blog.blogTitle}" />
-        <meta property="og:description" content="${blog.shortDescription}" />
-        <meta property="og:image" content="https://kao-nepal-backend.onrender.com/${blog.blogImage}" />
-        <meta property="og:url" content="https://kao-nepal-backend.onrender.com/blog/${slug}" />
+        ${
+          blog
+            ? `
+          <meta property="og:title" content="${blog.blogTitle}" />
+          <meta property="og:description" content="${blog.shortDescription}" />
+          <meta property="og:image" content="https://kao-nepal-backend.onrender.com/${blog.blogImage}" />
+          <meta property="og:url" content="https://your-domain.com/blog/${blog.blogSlug}" />
+        `
+            : ''
+        }
       `
     );
 
@@ -54,13 +67,9 @@ app.get('https://kao-nepal-backend.onrender.com/blog/:slug', async (req, res) =>
 
     res.send(html);
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error fetching blog data');
+    console.error('Error during SSR rendering:', error);
+    res.status(500).send('Error rendering page');
   }
-});
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(buildPath, 'index.html'));
 });
 
 app.listen(PORT, () => {
