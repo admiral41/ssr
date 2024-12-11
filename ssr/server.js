@@ -18,11 +18,11 @@ const buildPath = path.join(__dirname, '../build');
 
 app.use(express.static(buildPath));
 
-app.get('/blog/:slug', async (req, res) => {
+app.get('https://kao-nepal-backend.onrender.com/blog/:slug', async (req, res) => {
   const slug = req.params.slug;
 
   try {
-    const response = await axios.get(`https://api.myunicampus.com/blog/${slug}`);
+    const response = await axios.get(`https://kao-nepal-backend.onrender.com/blog/${slug}`);
     const blog = response.data.data;
 
     console.log('Blog data:', blog);
@@ -45,8 +45,8 @@ app.get('/blog/:slug', async (req, res) => {
         ${helmet.meta.toString()}
         <meta property="og:title" content="${blog.blogTitle}" />
         <meta property="og:description" content="${blog.shortDescription}" />
-        <meta property="og:image" content="https://api.myunicampus.com/${blog.blogImage}" />
-        <meta property="og:url" content="https://api.myunicampus.com/blog/${slug}" />
+        <meta property="og:image" content="https://kao-nepal-backend.onrender.com/${blog.blogImage}" />
+        <meta property="og:url" content="https://kao-nepal-backend.onrender.com/blog/${slug}" />
       `
     );
 

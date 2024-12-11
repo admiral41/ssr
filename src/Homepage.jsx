@@ -6,7 +6,7 @@ function HomePage() {
   const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
-    axios.get('https://api.myunicampus.com/blog').then((res) => setBlogs(res.data.data.blogs));
+    axios.get('https://kao-nepal-backend.onrender.com/blog').then((res) => setBlogs(res.data.data.blogs));
   }, []);
 
   return (
